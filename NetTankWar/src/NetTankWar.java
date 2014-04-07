@@ -10,12 +10,12 @@ import javax.swing.*;
 
 public class NetTankWar {
 
-   public static void main(String[] args) {
+	public static void main(String[] args) {
 		JFrame f = new JFrame("TankWar");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		WarPanel panel = new WarPanel();
 		f.add(panel, BorderLayout.CENTER);
 		f.pack();
 		f.setVisible(true);
-   }
+	}
 }
