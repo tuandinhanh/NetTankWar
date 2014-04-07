@@ -79,6 +79,7 @@ class Tank implements Ball {
 			}
 		}
 		if (fire) {
+			WarPanel.send("fire");
 			fireBullet();
 		}
 		// Update all of our bullets

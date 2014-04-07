@@ -205,6 +205,13 @@ public class WarPanel extends JPanel implements Runnable {
 		tanks.get(1 - playerID).processMove(s);
 	}
 	
+	public void processFire(String s) 
+	{
+		// Send command to tank not controlled by
+		// this player
+		tanks.get(1 - playerID).fireBullet();
+	}
+	
 	public void processRoundOver(String s) 
 	{
 		Scanner sc = new Scanner(s);

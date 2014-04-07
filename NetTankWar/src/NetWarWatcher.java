@@ -57,6 +57,10 @@ public class NetWarWatcher extends Thread {
 				{
 					ntw.processRoundOver(line);
 				}
+				else if (line.startsWith("fire"))
+				{
+					ntw.processFire(line);
+				}
 				else 
 				{
 					System.out.println("ERR: " + line + "\n");
