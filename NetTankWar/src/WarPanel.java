@@ -1,7 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+
 import javax.swing.*;
+
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -49,10 +51,8 @@ public class WarPanel extends JPanel implements Runnable {
 	public WarPanel() {
 		super();
 		setPreferredSize(new Dimension(PWIDTH, PHEIGHT));
-		redtank = new ImageIcon(this.getClass().getClassLoader()
-				.getResource("redtank.png")).getImage();
-		bluetank = new ImageIcon(this.getClass().getClassLoader()
-				.getResource("bluetank.png")).getImage();
+		redtank = new ImageIcon(this.getClass().getClassLoader().getResource("redtank.png")).getImage();
+		bluetank = new ImageIcon(this.getClass().getClassLoader().getResource("bluetank.png")).getImage();
 		addKeyListener(new KeyL());
 		addMouseListener(new MseL());
 
@@ -60,28 +60,30 @@ public class WarPanel extends JPanel implements Runnable {
 	}
 
 	// contact the NetWarServer
-	private void makeContact() {
-		try {
+	private void makeContact() 
+	{
+		try 
+		{
 			sock = new Socket(HOST, PORT);
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					sock.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(sock.getOutputStream(), true); // autoflush
-
-			new NetWarWatcher(this, in).start(); // start watching for server
-													// msgs
-
-		} catch (Exception e) {
+			new NetWarWatcher(this, in).start(); // start watching for server msgs
+		} 
+		catch (Exception e) 
+		{
 			System.out.println("Cannot contact the NetTankWar Server");
 			System.exit(0);
 		}
 	}
 
 	// send a message to the other player (via server)
-	public static void send(String msg) {
+	public static void send(String msg) 
+	{
 		out.println(msg);
 	}
 
-	void resetRound() {
+	void resetRound() 
+	{
 		// Build semi-random rock field
 		rocks = new ArrayList<Rock>();
 		int edge = (PWIDTH + PHEIGHT) / 20;
@@ -100,7 +102,8 @@ public class WarPanel extends JPanel implements Runnable {
 		ready = true;
 	}
 
-	public void addNotify() {
+	public void addNotify() 
+	{
 		super.addNotify();
 
 		offscreen = createImage(PWIDTH, PHEIGHT);
@@ -110,15 +113,18 @@ public class WarPanel extends JPanel implements Runnable {
 		anim.start();
 	}
 
-	public void setPlayerID(int id) {
+	public void setPlayerID(int id) 
+	{
 		playerID = id;
 	}
 
-	public int getPlayerID() {
+	public int getPlayerID() 
+	{
 		return playerID;
 	}
 
-	public void setRocks(String config) {
+	public void setRocks(String config) 
+	{
 		// Read rock string from other player
 		stringToRocks(config);
 		// Place tanks
@@ -131,13 +137,15 @@ public class WarPanel extends JPanel implements Runnable {
 		ready = true;
 	}
 
-	public void sendRocks() {
+	public void sendRocks() 
+	{
 		// Lay out rocks and send to other player
 		resetRound();
 		out.println("rocks " + rocksToString());
 	}
 
-	void placeRocks(int n, int x1, int y1, int x2, int y2, double aspect) {
+	void placeRocks(int n, int x1, int y1, int x2, int y2, double aspect) 
+	{
 		// place n rocks randomly located within distance r of
 		// the line from (x1,y1) to (x2,y2) where r is the length of
 		// this line times aspect.
@@ -146,7 +154,8 @@ public class WarPanel extends JPanel implements Runnable {
 
 		double len = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 		double r = len * aspect;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) 
+		{
 			s = Rock.rockGen.nextDouble();
 			tx = r * (Rock.rockGen.nextDouble() - 0.5);
 			ty = r * (Rock.rockGen.nextDouble() - 0.5);
@@ -154,15 +163,16 @@ public class WarPanel extends JPanel implements Runnable {
 			y = (int) (y1 + s * (y2 - y1) + ty);
 			rocks.add(new Rock(x, y, (int) (r / 2), (int) r));
 		}
-
 	}
 
-	public static void removeRock(int index) {
+	public static void removeRock(int index) 
+	{
 		// Deactivate the index-th rock in rocks
 		rocks.get(index).demolish();
 	}
 
-	public static String rocksToString() {
+	public static String rocksToString() 
+	{
 		// Return a string describing the rocks: x1 y1 d1;x2 y2 d2; ...
 		StringBuilder sb = new StringBuilder();
 		for (Rock r : rocks)
@@ -171,7 +181,8 @@ public class WarPanel extends JPanel implements Runnable {
 		return new String(sb);
 	}
 
-	public static void stringToRocks(String s) {
+	public static void stringToRocks(String s) 
+	{
 		// read the rocks string and fill in the ArrayList
 		int x, y, d;
 
@@ -187,13 +198,26 @@ public class WarPanel extends JPanel implements Runnable {
 		}
 	}
 
-	public void processMove(String s) {
+	public void processMove(String s) 
+	{
 		// Send command to tank not controlled by
 		// this player
 		tanks.get(1 - playerID).processMove(s);
 	}
+	
+	public void processRoundOver(String s) 
+	{
+		Scanner sc = new Scanner(s);
+		// Get the flag change
+		String command = sc.next();
+		boolean value = sc.nextBoolean();
+		int tank = (int) sc.nextDouble();
+		if (value)
+			tankHit(tank);
+	}
 
-	public static int hitAnItem(Ball b, ArrayList<? extends Ball> c) {
+	public static int hitAnItem(Ball b, ArrayList<? extends Ball> c) 
+	{
 		// Check if b has run into any element of c. If so
 		// return the index of the first item that was hit,
 		// or -1 if nothing hit.
@@ -211,20 +235,24 @@ public class WarPanel extends JPanel implements Runnable {
 		return -1;
 	}
 
-	public static void tankHit(int k) {
+	public static void tankHit(int k) 
+	{
 		// If a tank is hit, the round is over
-		if (!roundOver) {
+		if (!roundOver) 
+		{
 			roundOver = true;
 			loser = k;
+			WarPanel.send("roundOver " + roundOver + " " + k);
 		}
 	}
 
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) 
+	{
 		g.drawImage(offscreen, 0, 0, null);
 	}
 
-	public void frameRender(Graphics g) {
-
+	public void frameRender(Graphics g) 
+	{
 		// Draw a background
 		g.setColor(Color.yellow);
 		g.fillRect(0, 0, PWIDTH, PHEIGHT);
@@ -244,7 +272,8 @@ public class WarPanel extends JPanel implements Runnable {
 		for (Tank t : tanks)
 			t.paint(g);
 
-		if (roundOver) {
+		if (roundOver) 
+		{
 			g.setColor(Color.black);
 			g.setFont(font);
 			g.drawString("Round Over: " + (loser == RED ? "Blue" : "Red")
@@ -253,8 +282,8 @@ public class WarPanel extends JPanel implements Runnable {
 		}
 	}
 
-	public void run() {
-
+	public void run() 
+	{
 		while (anim != null) {
 			if (!roundOver) { // Freeze the action between rounds
 				tanks.get(playerID).update(true);

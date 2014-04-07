@@ -66,18 +66,15 @@ class Tank implements Ball {
 		}
 		if (local) {
 			if (turnL != prevtL) {
-				WarPanel.send("turnL " + turnL + " " + locX + " " + locY + " "
-						+ angle);
+				WarPanel.send("turnL " + turnL + " " + locX + " " + locY + " " + angle);
 				prevtL = turnL;
 			}
 			if (turnR != prevtR) {
-				WarPanel.send("turnR " + turnR + " " + locX + " " + locY + " "
-						+ angle);
+				WarPanel.send("turnR " + turnR + " " + locX + " " + locY + " " + angle);
 				prevtR = turnR;
 			}
 			if (forth != prevfo) {
-				WarPanel.send("forth " + forth + " " + locX + " " + locY + " "
-						+ angle);
+				WarPanel.send("forth " + forth + " " + locX + " " + locY + " " + angle);
 				prevfo = forth;
 			}
 		}

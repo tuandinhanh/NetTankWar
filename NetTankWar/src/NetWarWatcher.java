@@ -38,18 +38,29 @@ public class NetWarWatcher extends Thread {
 		String line;
 		try {
 			while ((line = in.readLine()) != null) {
-				System.out.println("Watcher: player " + ntw.getPlayerID()
-						+ " got " + line);
-				if (line.startsWith("begin")) {
+				System.out.println("Watcher: player " + ntw.getPlayerID() + " got " + line);
+				if (line.startsWith("begin")) 
+				{
 					ntw.setPlayerID(0);
 					ntw.sendRocks();
-				} else if (line.startsWith("rocks")) {
+				} 
+				else if (line.startsWith("rocks")) 
+				{
 					ntw.setPlayerID(1);
 					ntw.setRocks(line.substring(6));
-				} else if (line.startsWith("turn") || line.startsWith("forth"))
+				} 
+				else if (line.startsWith("turn") || line.startsWith("forth")) 
+				{
 					ntw.processMove(line);
-				else
+				}
+				else if (line.startsWith("roundOver"))
+				{
+					ntw.processRoundOver(line);
+				}
+				else 
+				{
 					System.out.println("ERR: " + line + "\n");
+				}
 			}
 		} catch (Exception e) // socket closure will cause termination of while
 		{
