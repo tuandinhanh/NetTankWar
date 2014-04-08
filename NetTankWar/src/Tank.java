@@ -5,6 +5,10 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.util.Scanner;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 class Tank implements Ball {
 
 	double locX, locY, radius, angle;
@@ -24,7 +28,7 @@ class Tank implements Ball {
 	Bullet bullets[] = new Bullet[MAXBULLETS];
 
 	AffineTransform saveAT; // place to hold current affine transform
-
+	
 	public Tank(double x, double y, double a, int index, Image im) {
 		locX = x;
 		locY = y;
@@ -120,7 +124,6 @@ class Tank implements Ball {
 		// Then draw bullets
 		for (Bullet b : bullets)
 			b.paint(g2);
-
 	}
 
 	void fireBullet() {
@@ -133,6 +136,16 @@ class Tank implements Ball {
 		if (slot < 0)
 			return;
 		// ...then launch a new bullet
+		try {
+		    Clip tankFiringSound = AudioSystem.getClip();
+		    AudioInputStream inputStream = AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResourceAsStream("tank-fire.wav"));
+		    tankFiringSound.open(inputStream);
+		    tankFiringSound.start();
+		    tankFiringSound.drain();
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	    
 		bullets[slot].setLocation(locX, locY);
 		bullets[slot].setDirection(angle);
 		bullets[slot].reset();

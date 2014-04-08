@@ -1,6 +1,10 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 class Bullet implements Ball {
 	double locX, locY, dx, dy;
 	int tank; // index of tank that fired this bullet
@@ -31,6 +35,15 @@ class Bullet implements Ball {
 			alive = false;
 			// Ask the game to deactivate this rock
 			WarPanel.removeRock(i);
+			try {
+			    Clip tankExplosionSound = AudioSystem.getClip();
+			    AudioInputStream inputStream = AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResourceAsStream("rockHit.wav"));
+			    tankExplosionSound.open(inputStream);
+			    tankExplosionSound.start();
+			    tankExplosionSound.drain();
+			} catch(Exception e) {
+				System.out.println(e);
+			}
 		}
 		// check for collisions with tanks (other than
 		// our tank)
