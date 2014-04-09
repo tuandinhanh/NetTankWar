@@ -349,6 +349,7 @@ public class WarPanel extends JPanel implements Runnable {
 		public void mousePressed(MouseEvent e) {
 			requestFocus();
 			if (roundOver) {
+				System.out.println("Round over click happened");
 				WarPanel.send("begin");
 			}
 		}

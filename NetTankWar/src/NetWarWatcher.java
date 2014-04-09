@@ -41,11 +41,13 @@ public class NetWarWatcher extends Thread {
 				System.out.println("Watcher: player " + ntw.getPlayerID() + " got " + line);
 				if (line.startsWith("begin")) 
 				{
+					System.out.println ("Beginning Game line");
 					ntw.setPlayerID(0);
 					ntw.sendRocks();
 				} 
 				else if (line.startsWith("rocks")) 
 				{
+					System.out.println ("Rocks Line");
 					ntw.setPlayerID(1);
 					ntw.setRocks(line.substring(6));
 				} 
