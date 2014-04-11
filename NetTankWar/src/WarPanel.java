@@ -111,6 +111,10 @@ public class WarPanel extends JPanel implements Runnable {
 		tanks.add(new Tank(PWIDTH - edge, PHEIGHT - edge, Math.PI, RED, redtank));
 		tanks.add(new Tank(edge, edge, 0.0, BLUE, bluetank));
 
+		if (redScore == 3 || blueScore == 3) {
+			redScore = 0;
+			blueScore = 0;
+		}
 		roundOver = false;
 		ready = true;
 	}
@@ -142,6 +146,11 @@ public class WarPanel extends JPanel implements Runnable {
 		tanks.add(new Tank(PWIDTH - edge, PHEIGHT - edge, Math.PI, RED, redtank));
 		tanks.add(new Tank(edge, edge, 0.0, BLUE, bluetank));
 
+		if (redScore == 3 || blueScore == 3) {
+			redScore = 0;
+			blueScore = 0;
+		}
+		
 		roundOver = false;
 		ready = true;
 	}
@@ -298,9 +307,15 @@ public class WarPanel extends JPanel implements Runnable {
 		if (roundOver) {
 			g.setColor(Color.black);
 			g.setFont(font);
-			g.drawString("Round Over: " + (loser == RED ? "Blue" : "Red")
-					+ " tank wins!", 150, 200);
-			g.drawString("Click mouse to start next round", 150, 250);
+			if (redScore == 3 || blueScore == 3) {
+				g.drawString("Game Over: " + (blueScore == 3 ? "Blue" : "Red")
+						+ " tank wins!", 150, 200);
+				g.drawString("Click mouse to start a new game.", 150, 250);
+			} else {
+				g.drawString("Round Over: " + (loser == RED ? "Blue" : "Red")
+						+ " tank wins!", 150, 200);
+				g.drawString("Click mouse to start next round", 150, 250);
+			}
 		}
 	}
 
