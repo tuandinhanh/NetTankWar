@@ -272,8 +272,12 @@ public class WarPanel extends JPanel implements Runnable {
 		}
 
 		// Draw rocks
+		for (int i=0; i<rocks.size(); i++)
+			rocks.get(i).paint(g);
+		/*
 		for (Rock r : rocks)
 			r.paint(g);
+		*/
 
 		// Draw tanks (and their bullets)
 		for (Tank t : tanks)

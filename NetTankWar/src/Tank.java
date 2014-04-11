@@ -19,7 +19,7 @@ class Tank implements Ball {
 	Image image;
 
 	public static final double twoPi = Math.PI * 2.0;
-	public static final double turnRate = Math.PI / 8;
+	public static final double turnRate = Math.PI / 12;
 	public static final double speed = 4.0;
 	public static final int RELOAD = 8; // delay between bullets
 	int count; // timer for reloading
