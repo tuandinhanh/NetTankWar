@@ -34,6 +34,9 @@ public class WarPanel extends JPanel implements Runnable {
 
 	Image redtank;
 	Image bluetank;
+	
+	static int redScore = 0;
+	static int blueScore = 0;
 
 	public static final int PWIDTH = 800;
 	public static final int PHEIGHT = 600;
@@ -243,6 +246,10 @@ public class WarPanel extends JPanel implements Runnable {
 		if (!roundOver) {
 			roundOver = true;
 			loser = k;
+			if (loser == RED)
+				blueScore++;
+			else
+				redScore++;
 			WarPanel.send("roundOver " + roundOver + " " + k);
 			/*try {
 				Clip tankExplosionSound = AudioSystem.getClip();
@@ -271,6 +278,11 @@ public class WarPanel extends JPanel implements Runnable {
 			return;
 		}
 
+		g.setColor(Color.red);
+		g.setFont(font);
+		g.drawString("Red Score: " + redScore, PWIDTH - 232, 25);
+		g.drawString("Blue Score: " + blueScore, PWIDTH - 250, 55);
+		
 		// Draw rocks
 		for (int i=0; i<rocks.size(); i++)
 			rocks.get(i).paint(g);
